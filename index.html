@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyTrack — JAMB Syllabus Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0a1628;
+  --navy2: #0f2040;
+  --navy3: #162d55;
+  --blue: #1a56db;
+  --blue-light: #3b82f6;
+  --blue-glow: rgba(26,86,219,0.25);
+  --white: #ffffff;
+  --off-white: #f0f4ff;
+  --pale: #e8eeff;
+  --muted: #8899bb;
+  --border: rgba(255,255,255,0.1);
+  --border2: rgba(255,255,255,0.06);
+  --math: #f59e0b;
+  --eng: #10d9a0;
+  --phy: #60a5fa;
+  --chem: #f472b6;
+  --success: #22c55e;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  background: var(--navy);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── BACKGROUND ── */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-layer::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 700px; height: 700px;
+  background: radial-gradient(circle, rgba(26,86,219,0.18) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.bg-layer::after {
+  content: '';
+  position: absolute;
+  bottom: -150px; left: -100px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(16,217,160,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HERO HEADER ── */
+.hero {
+  position: relative;
+  z-index: 2;
+  background: linear-gradient(180deg, var(--navy2) 0%, var(--navy) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 0;
+}
+
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  height: 68px;
+  border-bottom: 1px solid var(--border2);
+}
+
+.logo-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo-icon {
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, var(--blue), var(--blue-light));
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.logo-text {
+  font-family: 'Fraunces', serif;
+  font-size: 1.35rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: var(--white);
+}
+
+.logo-text span {
+  color: var(--blue-light);
+}
+
+.top-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.05);
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.badge strong { color: var(--white); font-weight: 600; }
+
+.btn {
+  padding: 7px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,0.06);
+  color: var(--white);
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  letter-spacing: 0.02em;
+}
+.btn:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); }
+.btn-blue {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+.btn-blue:hover { background: var(--blue-light); border-color: var(--blue-light); }
+.btn-danger { color: #f87171; }
+
+/* Hero content */
+.hero-content {
+  padding: 3rem 3rem 2.5rem;
+  display: flex;
+  align-items: flex-end;
+  gap: 4rem;
+}
+
+.hero-left { flex: 1; }
+
+.hero-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--blue-light);
+  margin-bottom: 0.75rem;
+}
+
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  margin-bottom: 1rem;
+  color: var(--white);
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--blue-light);
+}
+
+.hero-sub {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 420px;
+}
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  min-width: 320px;
+}
+
+/* Overall progress card */
+.overall-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.oc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.oc-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+.oc-pct {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+}
+
+.big-bar {
+  height: 12px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.big-bar-fill {
+  height: 100%;
+  border-radius: 12px;
+  background: linear-gradient(90deg, var(--blue), var(--blue-light), var(--eng));
+  background-size: 200% 100%;
+  animation: gradShift 4s linear infinite;
+  transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes gradShift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.oc-stats {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.oc-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.oc-stat strong { color: var(--white); font-weight: 700; }
+.oc-stat-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+}
+
+/* Subject mini bars */
+.subj-bars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.subj-bar-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.subj-bar-card:hover { background: rgba(255,255,255,0.08); border-color: var(--border); }
+
+.sbc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.sbc-name {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.sbc-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--muted);
+}
+
+.sbc-bar {
+  height: 4px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.sbc-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.6s ease;
+}
+
+/* ── NAVIGATION TABS ── */
+.nav-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(10,22,40,0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 3rem;
+  display: flex;
+  gap: 0;
+  align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-tabs::-webkit-scrollbar { display: none; }
+
+.nav-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 1rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  position: relative;
+  white-space: nowrap;
+  transition: color 0.2s;
+  letter-spacing: 0.01em;
+}
+.nav-tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.nav-tab:hover { color: var(--white); }
+.nav-tab.active { color: var(--white); }
+.nav-tab.active::after { opacity: 1; }
+
+.nav-tab[data-s="math"]::after { background: var(--math); }
+.nav-tab[data-s="english"]::after { background: var(--eng); }
+.nav-tab[data-s="physics"]::after { background: var(--phy); }
+.nav-tab[data-s="chemistry"]::after { background: var(--chem); }
+
+.nav-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.nav-tab[data-s="math"] .nav-dot { background: var(--math); }
+.nav-tab[data-s="english"] .nav-dot { background: var(--eng); }
+.nav-tab[data-s="physics"] .nav-dot { background: var(--phy); }
+.nav-tab[data-s="chemistry"] .nav-dot { background: var(--chem); }
+
+.nav-count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.65rem;
+  padding: 2px 7px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.07);
+  color: var(--muted);
+}
+.nav-tab.active .nav-count { color: var(--white); }
+
+/* ── MAIN CONTENT ── */
+.main {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 3rem 5rem;
+}
+
+.subject-panel { display: none; }
+.subject-panel.active {
+  display: block;
+  animation: panelIn 0.3s ease;
+}
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Subject controls bar */
+.controls-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ctrl-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.subj-heading {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.ctrl-right {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  position: relative;
+}
+.search-box input {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px 12px 7px 32px;
+  color: var(--white);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 0.8rem;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 180px;
+}
+.search-box input:focus { border-color: rgba(255,255,255,0.25); }
+.search-box input::placeholder { color: var(--muted); }
+.search-ico {
+  position: absolute;
+  left: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 0.8rem;
+  pointer-events: none;
+}
+
+/* Filter pills */
+.filter-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.fpill {
+  padding: 5px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border2);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.fpill:hover { color: var(--white); border-color: var(--border); }
+.fpill.active {
+  background: rgba(26,86,219,0.25);
+  border-color: var(--blue-light);
+  color: var(--blue-light);
+}
+
+/* Stats row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border2);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  text-align: center;
+  transition: all 0.2s;
+}
+.stat-card:hover { background: rgba(255,255,255,0.07); }
+
+.sc-num {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.sc-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+/* Section blocks */
+.section-block {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border2);
+  border-radius: 14px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.section-block:hover { border-color: rgba(255,255,255,0.1); }
+.section-block.expanded { border-color: rgba(255,255,255,0.08); }
+
+.sec-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s;
+}
+.sec-header:hover { background: rgba(255,255,255,0.03); }
+
+.sec-header-left { display: flex; align-items: center; gap: 10px; }
+
+.sec-icon {
+  width: 30px; height: 30px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.sec-title {
+  font-weight: 700;
+  font-size: 0.88rem;
+  letter-spacing: 0.01em;
+}
+
+.sec-header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sec-prog {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.sec-mini-bar {
+  width: 70px; height: 4px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.sec-mini-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.4s ease;
+}
+.sec-pct {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--muted);
+  min-width: 32px;
+}
+
+.chev {
+  color: var(--muted);
+  font-size: 0.8rem;
+  transition: transform 0.3s;
+}
+.section-block.expanded .chev { transform: rotate(180deg); }
+
+.sec-body { display: none; }
+.section-block.expanded .sec-body { display: block; border-top: 1px solid var(--border2); }
+
+/* Topic items */
+.topic-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 0.9rem 1.25rem;
+  cursor: pointer;
+  transition: background 0.12s;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+}
+.topic-item:last-child { border-bottom: none; }
+.topic-item:hover { background: rgba(255,255,255,0.04); }
+.topic-item.completed { opacity: 0.55; }
+
+.t-check {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 2px solid rgba(255,255,255,0.15);
+  flex-shrink: 0;
+  margin-top: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.topic-item.completed .t-check {
+  background: var(--success);
+  border-color: var(--success);
+}
+.topic-item.completed .t-check::after {
+  content: '✓';
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.t-body { flex: 1; min-width: 0; }
+.t-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+.topic-item.completed .t-title {
+  text-decoration: line-through;
+  color: var(--muted);
+}
+
+.t-details {
+  display: none;
+  margin-top: 8px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  border-left: 3px solid rgba(255,255,255,0.1);
+}
+.topic-item.t-open .t-details { display: block; }
+
+.t-details p {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 8px;
+}
+
+.t-obj-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--blue-light);
+  margin-bottom: 6px;
+}
+
+.t-obj-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.t-obj-tag {
+  font-size: 0.7rem;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(26,86,219,0.2);
+  border: 1px solid rgba(26,86,219,0.3);
+  color: var(--phy);
+  font-weight: 500;
+}
+
+.t-expand {
+  color: var(--muted);
+  font-size: 0.72rem;
+  flex-shrink: 0;
+  margin-top: 4px;
+  padding: 4px;
+  transition: transform 0.2s;
+}
+.topic-item.t-open .t-expand { transform: rotate(180deg); }
+
+/* ── COLORS ── */
+.math-color { color: var(--math); }
+.eng-color { color: var(--eng); }
+.phy-color { color: var(--phy); }
+.chem-color { color: var(--chem); }
+
+.math-bg { background: rgba(245,158,11,0.15); }
+.eng-bg { background: rgba(16,217,160,0.12); }
+.phy-bg { background: rgba(96,165,250,0.12); }
+.chem-bg { background: rgba(244,114,182,0.12); }
+
+.math-bar { background: var(--math); }
+.eng-bar { background: var(--eng); }
+.phy-bar { background: var(--phy); }
+.chem-bar { background: var(--chem); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: var(--navy2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 0.85rem;
+  color: var(--white);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.28s;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  font-weight: 500;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* ── CELEBRATION ── */
+#confetti-canvas {
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+}
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(6px);
+  z-index: 9997;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s;
+}
+.modal-overlay.show { opacity: 1; pointer-events: all; }
+.modal-card {
+  background: var(--navy2);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 24px;
+  padding: 3rem;
+  text-align: center;
+  max-width: 420px;
+  width: 90%;
+  transform: scale(0.85);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+}
+.modal-overlay.show .modal-card { transform: scale(1); }
+.modal-emoji { font-size: 3.5rem; margin-bottom: 1rem; }
+.modal-title {
+  font-family: 'Fraunces', serif;
+  font-size: 1.75rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+}
+.modal-sub { color: var(--muted); margin-bottom: 1.5rem; font-size: 0.9rem; line-height: 1.5; }
+
+/* ── FOOTER ── */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  background: var(--navy2);
+  border-top: 1px solid var(--border2);
+  padding: 2rem 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero-content { flex-direction: column; gap: 2rem; }
+  .hero-title { font-size: 2rem; }
+  .hero-right { min-width: unset; width: 100%; }
+  .subj-bars { grid-template-columns: 1fr 1fr; }
+  .top-bar, .nav-tabs, .main, .site-footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .hero-content { padding: 2rem 1.5rem; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .badge { display: none; }
+}
+@media (max-width: 560px) {
+  .hero-title { font-size: 1.6rem; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .ctrl-right { width: 100%; }
+  .search-box input { width: 100%; }
+}
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+
+<div class="bg-layer"></div>
+<div class="bg-grid"></div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-card">
+    <div class="modal-emoji">🏆</div>
+    <div class="modal-title" id="modal-title">Section Complete!</div>
+    <div class="modal-sub" id="modal-sub">Keep up the momentum!</div>
+    <button class="btn btn-blue" onclick="closeModal()" style="margin:0 auto;display:block;padding:10px 28px">Continue →</button>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <span id="t-icon">✓</span>
+  <span id="t-msg">Marked complete!</span>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="top-bar">
+    <div class="logo-wrap">
+      <div class="logo-icon">📚</div>
+      <div class="logo-text">Study<span>Track</span></div>
+    </div>
+    <div class="top-actions">
+      <div class="badge">Done: <strong id="hdr-done">0</strong>/<strong id="hdr-all">0</strong></div>
+      <div class="badge">🔥 Today: <strong id="hdr-streak">0</strong></div>
+      <button class="btn" onclick="exportProgress()">⬇ Export</button>
+      <button class="btn btn-danger" onclick="resetAll()">↺ Reset</button>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-eyebrow">JAMB 2026 Preparation</div>
+      <div class="hero-title">Master Your<br><em>Syllabus</em></div>
+      <div class="hero-sub">Track every topic across Mathematics, English, Physics and Chemistry. Check off each topic as you study and watch your progress grow.</div>
+    </div>
+    <div class="hero-right">
+      <div class="overall-card">
+        <div class="oc-top">
+          <div class="oc-label">Overall Progress</div>
+          <div class="oc-pct" id="oc-pct">0%</div>
+        </div>
+        <div class="big-bar">
+          <div class="big-bar-fill" id="big-bar" style="width:0%"></div>
+        </div>
+        <div class="oc-stats">
+          <div class="oc-stat"><div class="oc-stat-dot" style="background:var(--success)"></div><strong id="oc-done">0</strong> done</div>
+          <div class="oc-stat"><div class="oc-stat-dot" style="background:#f87171"></div><strong id="oc-left">0</strong> left</div>
+        </div>
+      </div>
+      <div class="subj-bars">
+        <div class="subj-bar-card" onclick="switchTab('math')">
+          <div class="sbc-top"><div class="sbc-name math-color">Math</div><div class="sbc-count" id="sbc-math">0/0</div></div>
+          <div class="sbc-bar"><div class="sbc-fill math-bar" id="sbc-bar-math" style="width:0%"></div></div>
+        </div>
+        <div class="subj-bar-card" onclick="switchTab('english')">
+          <div class="sbc-top"><div class="sbc-name eng-color">English</div><div class="sbc-count" id="sbc-english">0/0</div></div>
+          <div class="sbc-bar"><div class="sbc-fill eng-bar" id="sbc-bar-english" style="width:0%"></div></div>
+        </div>
+        <div class="subj-bar-card" onclick="switchTab('physics')">
+          <div class="sbc-top"><div class="sbc-name phy-color">Physics</div><div class="sbc-count" id="sbc-physics">0/0</div></div>
+          <div class="sbc-bar"><div class="sbc-fill phy-bar" id="sbc-bar-physics" style="width:0%"></div></div>
+        </div>
+        <div class="subj-bar-card" onclick="switchTab('chemistry')">
+          <div class="sbc-top"><div class="sbc-name chem-color">Chemistry</div><div class="sbc-count" id="sbc-chemistry">0/0</div></div>
+          <div class="sbc-bar"><div class="sbc-fill chem-bar" id="sbc-bar-chemistry" style="width:0%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs">
+  <button class="nav-tab active" data-s="math" onclick="switchTab('math')">
+    <div class="nav-dot"></div> Mathematics
+    <span class="nav-count" id="ntc-math">0/0</span>
+  </button>
+  <button class="nav-tab" data-s="english" onclick="switchTab('english')">
+    <div class="nav-dot"></div> English
+    <span class="nav-count" id="ntc-english">0/0</span>
+  </button>
+  <button class="nav-tab" data-s="physics" onclick="switchTab('physics')">
+    <div class="nav-dot"></div> Physics
+    <span class="nav-count" id="ntc-physics">0/0</span>
+  </button>
+  <button class="nav-tab" data-s="chemistry" onclick="switchTab('chemistry')">
+    <div class="nav-dot"></div> Chemistry
+    <span class="nav-count" id="ntc-chemistry">0/0</span>
+  </button>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- Each subject panel generated by JS -->
+  <div class="subject-panel active" id="panel-math"></div>
+  <div class="subject-panel" id="panel-english"></div>
+  <div class="subject-panel" id="panel-physics"></div>
+  <div class="subject-panel" id="panel-chemistry"></div>
+</div>
+
+<footer class="site-footer">
+  <div>StudyTrack · JAMB 2026 · All subjects covered</div>
+  <div>Progress auto-saved to your browser</div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════
+// SYLLABUS DATA
+// ═══════════════════════════════════════════
+const SYLLABUS = {
+  math: {
+    label: 'Mathematics', color: 'math', icon: '∑',
+    sections: [
+      { title: 'Section I — Number and Numeration', topics: [
+        { id: 'm1', title: 'Number Bases', details: 'Operations in different number bases from 2 to 10; conversion from one base to another including fractional parts.', obj: ['Perform four basic operations (×,+,−,÷)', 'Convert one base to another'] },
+        { id: 'm2', title: 'Fractions, Decimals, Approximations & Percentages', details: 'Fractions and decimals; significant figures; decimal places; percentage errors; simple interest; profit and loss percent; ratio, proportion and rate; shares and VAT.', obj: ['Perform basic operations on fractions/decimals', 'Express to significant figures & decimal places', 'Calculate simple interest, profit & loss', 'Solve problems involving share and VAT'] },
+        { id: 'm3', title: 'Indices, Logarithms and Surds', details: 'Laws of indices; standard form; laws of logarithm; change of bases; relationship between indices and logarithm; surds.', obj: ['Apply laws of indices', 'Establish index-logarithm relationship', 'Simplify and rationalize surds', 'Perform basic operations on surds'] },
+        { id: 'm4', title: 'Sets', details: 'Types of sets; algebra of sets; Venn diagrams and their applications.', obj: ['Identify types of sets (empty, universal, complement, subset, finite, infinite, disjoint)', 'Solve cardinality problems', 'Use Venn diagrams (up to 3 sets)'] },
+      ]},
+      { title: 'Section II — Algebra', topics: [
+        { id: 'm5', title: 'Polynomials', details: 'Change of subject; factor and remainder theorems; factorization (degree ≤ 3); multiplication and division; roots; simultaneous equations (one linear, one quadratic); graphs.', obj: ['Find subject of formula', 'Apply factor/remainder theorem', 'Factorize polynomials', 'Solve simultaneous equations', 'Interpret polynomial graphs'] },
+        { id: 'm6', title: 'Variation', details: 'Direct, inverse, joint and partial variation; percentage increase and decrease.', obj: ['Solve direct, inverse, joint and partial variation problems', 'Solve percentage increase/decrease in variation'] },
+        { id: 'm7', title: 'Inequalities', details: 'Analytical and graphical solutions of linear inequalities; quadratic inequalities with integral roots only.', obj: ['Solve linear and quadratic inequalities', 'Interpret inequality graphs'] },
+        { id: 'm8', title: 'Progression (AP & GP)', details: 'nth term of a progression; sum of A.P. and G.P.; sum to infinity of G.P.', obj: ['Determine nth term', 'Compute sum of AP and GP', 'Sum to infinity of GP'] },
+        { id: 'm9', title: 'Binary Operations', details: 'Properties of closure, commutativity, associativity and distributivity; identity and inverse elements.', obj: ['Solve closure, commutativity, associativity, distributivity problems', 'Solve identity and inverse element problems'] },
+        { id: 'm10', title: 'Matrices and Determinants', details: 'Algebra of matrices (up to 3×3); determinants (up to 3×3); inverses of 2×2 matrices.', obj: ['Perform basic matrix operations', 'Calculate determinants', 'Compute inverses of 2×2 matrices'] },
+      ]},
+      { title: 'Section III — Geometry and Trigonometry', topics: [
+        { id: 'm11', title: 'Euclidean Geometry', details: 'Properties of angles and lines; polygons (triangles, quadrilaterals); circles (angle properties, cyclic quadrilaterals, intersecting chords); construction.', obj: ['Identify types of lines and angles', 'Solve polygon problems', 'Calculate angles using circle theorems', 'Identify construction procedures for special angles'] },
+        { id: 'm12', title: 'Mensuration', details: 'Lengths and areas of plane figures; arcs and chords; sectors and segments; surface areas and volumes; earth as a sphere (longitudes and latitudes).', obj: ['Calculate perimeters and areas', 'Find arc length, sector/segment areas', 'Calculate surface areas and volumes', 'Determine distance between points on earth'] },
+        { id: 'm13', title: 'Loci', details: 'Locus in 2 dimensions based on geometric principles relating to lines and curves.', obj: ['Identify and interpret loci (parallel lines, perpendicular bisectors, angle bisectors, circles)'] },
+        { id: 'm14', title: 'Coordinate Geometry', details: 'Midpoint and gradient; distance between two points; parallel and perpendicular lines; equations of straight lines.', obj: ['Determine midpoint and gradient', 'Find distance between points', 'Identify parallelism/perpendicularity conditions', 'Find equation of a line in various forms'] },
+        { id: 'm15', title: 'Trigonometry', details: 'Trigonometrical ratios; elevation and depression; bearings; areas and solutions of triangles; graphs of sine and cosine; sine and cosine formulae.', obj: ['Calculate sin, cos and tan for −360° ≤ θ ≤ 360°', 'Apply special angles (30°, 45°, 60°, 75°, 90°, etc.)', 'Solve elevation/depression and bearing problems', 'Solve sine/cosine graph problems'] },
+      ]},
+      { title: 'Section IV — Calculus', topics: [
+        { id: 'm16', title: 'Differentiation', details: 'Limit of a function; differentiation of explicit algebraic and simple trigonometrical functions (sin, cos, tan).', obj: ['Find the limit of a function', 'Differentiate algebraic and simple trig functions'] },
+        { id: 'm17', title: 'Application of Differentiation', details: 'Rate of change; maxima and minima.', obj: ['Solve problems involving rate of change', 'Solve maxima and minima problems'] },
+        { id: 'm18', title: 'Integration', details: 'Integration of explicit algebraic and simple trigonometrical functions; area under the curve.', obj: ['Solve integration problems (algebraic + trig)', 'Calculate area under the curve'] },
+      ]},
+      { title: 'Section V — Statistics', topics: [
+        { id: 'm19', title: 'Representation of Data', details: 'Frequency distribution; histogram, bar chart and pie chart.', obj: ['Identify and interpret frequency distribution tables', 'Interpret histograms, bar charts and pie charts'] },
+        { id: 'm20', title: 'Measures of Location', details: 'Mean, mode and median of ungrouped and grouped data; cumulative frequency.', obj: ['Calculate mean, mode and median', 'Use ogive to find median, quartiles and percentiles'] },
+        { id: 'm21', title: 'Measures of Dispersion', details: 'Range, mean deviation, variance and standard deviation.', obj: ['Calculate range, mean deviation, variance and standard deviation'] },
+        { id: 'm22', title: 'Permutation and Combination', details: 'Linear and circular arrangements; arrangements involving repeated objects.', obj: ['Solve permutation and combination problems'] },
+        { id: 'm23', title: 'Probability', details: 'Experimental probability; addition and multiplication of probabilities (mutual and independent cases).', obj: ['Solve probability problems including addition and multiplication'] },
+      ]},
+    ]
+  },
+  english: {
+    label: 'English Language', color: 'english', icon: 'A',
+    sections: [
+      { title: 'Section A — Comprehension / Summary', topics: [
+        { id: 'e1', title: 'Description', details: 'Reading and understanding descriptive passages (~200 words). Tests comprehension of whole or part of the passage.', obj: ['Identify main points/topic sentences', 'Determine implied meaning', 'Identify grammatical functions of words/phrases'] },
+        { id: 'e2', title: 'Narration', details: 'Reading and understanding narrative passages — fiction and non-fiction accounts.', obj: ['Identify main points/topic sentences', 'Deduce writer\'s mood, attitude and opinion', 'Comprehend words and figures of speech'] },
+        { id: 'e3', title: 'Exposition', details: 'Reading and understanding expository passages that explain or inform.', obj: ['Identify topic sentences', 'Determine implied meaning', 'Apply coherence and logical reasoning (deductions, inferences)'] },
+        { id: 'e4', title: 'Argumentation / Persuasion', details: 'Reading and understanding argumentative or persuasive passages.', obj: ['Determine the writer\'s standpoint', 'Identify persuasive techniques', 'Synthesize ideas from the passage'] },
+        { id: 'e5', title: 'Cloze Test', details: 'A passage of about 200 words with gaps to fill. Tests vocabulary, grammar and reading comprehension holistically. (10 questions)', obj: ['Understand overall passage meaning', 'Apply vocabulary knowledge', 'Apply grammar rules to fill gaps correctly'] },
+        { id: 'e6', title: 'Reading Text: The Lekki Headmaster (Kabir Alabi Garba)', details: 'Close reading of the prescribed literary text. 10 questions covering comprehension, themes, characterization and literary devices.', obj: ['Comprehend the text fully', 'Identify themes and characters', 'Understand literary devices used', 'Synthesize ideas from the text'] },
+      ]},
+      { title: 'Section B — Lexis and Structure', topics: [
+        { id: 'e7', title: 'Synonyms', details: 'Words with similar meanings. Tested using sentence context. (5 questions)', obj: ['Determine similar meanings of words', 'Identify words in context'] },
+        { id: 'e8', title: 'Antonyms', details: 'Words with opposite meanings. Tested using sentence context. (5 questions)', obj: ['Determine opposite meanings of words'] },
+        { id: 'e9', title: 'Homonyms', details: 'Words that sound alike or are spelled alike but have different meanings.', obj: ['Identify words in ordinary, figurative and idiomatic contexts'] },
+        { id: 'e10', title: 'Clause and Sentence Patterns', details: 'Structure of clauses (noun, adverb, adjective) and sentence types (simple, compound, complex, compound-complex).', obj: ['Identify various grammatical patterns', 'Interpret information conveyed in sentences'] },
+        { id: 'e11', title: 'Word Classes and Their Functions', details: 'Nouns, verbs, adjectives, adverbs, pronouns, prepositions, conjunctions, interjections and their roles in sentences.', obj: ['Identify word classes', 'Determine their functions in context'] },
+        { id: 'e12', title: 'Mood, Tense, Aspect, Agreement, Concord & Question Tags', details: 'Verb moods; tenses; aspect; subject-verb agreement; concord; degrees (positive, comparative, superlative); question tags.', obj: ['Identify correct tense and aspect usage', 'Apply subject-verb agreement rules', 'Form correct question tags'] },
+        { id: 'e13', title: 'Punctuation and Spelling', details: 'Correct use of commas, full stops, colons, semicolons, apostrophes, quotation marks, etc. Correct spelling patterns.', obj: ['Differentiate between correct and incorrect punctuation', 'Identify correct spelling'] },
+        { id: 'e14', title: 'Figurative and Idiomatic Usage', details: 'Ordinary usage, figurative usage (simile, metaphor, personification) and formal idiomatic usage in standard British English.', obj: ['Identify figurative and idiomatic expressions', 'Interpret their meanings in context'] },
+      ]},
+      { title: 'Section C — Oral Forms', topics: [
+        { id: 'e15', title: 'Vowels — Monophthongs and Diphthongs', details: 'The 12 pure vowels (monophthongs) and 8 gliding vowels (diphthongs) of British English. Recognizing and distinguishing vowel sounds.', obj: ['Make distinctions between vowel types', 'Identify monophthongs vs diphthongs'] },
+        { id: 'e16', title: 'Consonants (Including Clusters)', details: 'All 24 consonants of English including consonant clusters (e.g., str-, spl-, -nts).', obj: ['Differentiate between consonant types', 'Identify consonant clusters'] },
+        { id: 'e17', title: 'Rhymes and Homophones', details: 'Words that rhyme (end with the same sound) and homophones (identical sound, different spelling/meaning).', obj: ['Identify rhyming words', 'Recognize homophones'] },
+        { id: 'e18', title: 'Word Stress (Monosyllabic and Polysyllabic)', details: 'Placement of stress in single-syllable and multi-syllable words. Polysyllabic word stress patterns.', obj: ['Identify correct accentuation in individual words', 'Identify stress patterns in connected speech'] },
+        { id: 'e19', title: 'Intonation and Emphatic Stress', details: 'Rising and falling intonation patterns. Emphatic stress — placement of normal stress on words for purposes of emphasis.', obj: ['Identify correct intonation patterns', 'Recognize emphatic stress in utterances'] },
+      ]},
+    ]
+  },
+  physics: {
+    label: 'Physics', color: 'physics', icon: 'φ',
+    sections: [
+      { title: '1. Measurements and Units', topics: [
+        { id: 'p1', title: 'Length, Area and Volume', details: 'Metre rule, Vernier calipers, Micrometer Screw-gauge, measuring cylinder. Strings, engineering calipers. Note degree of accuracy.', obj: ['Identify units of length, area and volume', 'Use different measuring instruments', 'Determine lengths, surface areas and volumes of regular and irregular bodies'] },
+        { id: 'p2', title: 'Mass and Time', details: 'Unit of mass; use of simple beam balance; concept of beam balance. Unit of time; time-measuring devices.', obj: ['Identify the unit of mass', 'Use simple beam balance', 'Identify time-measuring devices'] },
+        { id: 'p3', title: 'Fundamental and Derived Physical Quantities', details: 'Fundamental physical quantities; derived quantities and their units; combinations of fundamental quantities.', obj: ['Relate fundamental quantities to their units', 'Deduce units of derived physical quantities'] },
+        { id: 'p4', title: 'Dimensions', details: 'Definition of dimensions; simple examples. Test homogeneity of equations.', obj: ['Determine dimensions of physical quantities', 'Use dimensions to determine units', 'Test homogeneity of an equation'] },
+        { id: 'p5', title: 'Limitations of Experimental Measurements', details: 'Accuracy of measuring instruments; simple estimation of errors; significant figures; standard form.', obj: ['Determine accuracy of measuring instruments', 'Estimate simple errors', 'Express measurements in standard form'] },
+        { id: 'p6', title: 'Displacement, Position and Frame of Reference', details: 'Concept of displacement; distinction between distance and displacement; concept of position and coordinates; frame of reference. Use compass and protractor; Cartesian systems.', obj: ['Distinguish distance from displacement', 'Use Cartesian system to locate positions', 'Plot graphs and draw inferences'] },
+      ]},
+      { title: '2. Scalars and Vectors', topics: [
+        { id: 'p7', title: 'Scalars and Vectors', details: 'Definition and examples of scalar and vector quantities; relative velocity; resolution of vectors into two perpendicular directions including graphical methods.', obj: ['Distinguish scalar from vector quantities', 'Determine resultant of vectors', 'Determine relative velocity', 'Resolve vectors into perpendicular components', 'Use graphical methods for vector problems'] },
+      ]},
+      { title: '3. Motion', topics: [
+        { id: 'p8', title: 'Types of Motion and Forces', details: 'Translational, oscillatory, rotational, spin and random motion. Contact forces and field forces (electric, magnetic, gravitational).', obj: ['Identify different types of motion', 'Identify force as cause of motion', 'Identify field forces'] },
+        { id: 'p9', title: 'Linear Motion', details: 'Speed, velocity and acceleration; equations of uniformly accelerated motion; motion under gravity; distance-time and velocity-time graphs; instantaneous velocity and acceleration.', obj: ['Differentiate speed, velocity and acceleration', 'Deduce equations of uniformly accelerated motion', 'Solve problems of motion under gravity', 'Interpret distance-time and velocity-time graphs'] },
+        { id: 'p10', title: 'Projectiles', details: 'Calculation of range, maximum height and time of flight from the ground and a height; applications of projectile motion.', obj: ['Establish expressions for range, max height and time of flight', 'Solve projectile motion problems'] },
+        { id: 'p11', title: "Newton's Laws of Motion", details: 'Inertia, mass and force; relationship between mass and acceleration; impulse and momentum; force-time graph; conservation of linear momentum (coefficient of restitution not required).', obj: ["Interpret Newton's laws of motion", 'Compare inertia, mass and force', 'Solve impulse and momentum problems', 'Apply conservation of linear momentum', 'Interpret area under force-time graph'] },
+        { id: 'p12', title: 'Motion in a Circle', details: 'Angular velocity and angular acceleration; centripetal and centrifugal forces; applications.', obj: ['Establish expressions for angular velocity, angular acceleration and centripetal force', 'Solve numerical problems on circular motion'] },
+        { id: 'p13', title: 'Simple Harmonic Motion (SHM)', details: 'Definition; examples; period, frequency and amplitude; velocity and acceleration of SHM; energy changes; forced vibration and resonance (simple treatment).', obj: ['Define and explain SHM', 'Establish relationship between period and frequency', 'Analyse energy changes in SHM', 'Identify types of forced vibration', 'Enumerate applications of resonance'] },
+      ]},
+      { title: '4. Gravitational Field', topics: [
+        { id: 'p14', title: 'Gravitational Field', details: "Newton's law of universal gravitation; gravitational potential; conservative and non-conservative fields; acceleration due to gravity; variation of g on earth's surface; mass vs weight; escape velocity; parking orbit; weightlessness.", obj: ['Apply Newton\'s law of universal gravitation', 'Deduce expression for gravitational field potential', 'Identify causes of variation of g', 'Differentiate mass and weight', 'Determine escape velocity'] },
+      ]},
+      { title: '5. Equilibrium of Forces', topics: [
+        { id: 'p15', title: 'Equilibrium of Particles and Moments', details: 'Equilibrium of coplanar forces; triangles and polygon of forces; Lami\'s theorem. Moment of a force; moment of a couple (torque); applications. Resultant and equilibrant.', obj: ['Apply conditions for equilibrium of coplanar forces', "Apply Lami's theorem", 'Determine moment of a force and couple', 'Differentiate stable, unstable and neutral equilibrium'] },
+      ]},
+      { title: '6. Work, Energy and Power', topics: [
+        { id: 'p16', title: 'Work, Energy and Power', details: 'Definitions; forms of energy; conservation of energy; transformation between different forms; interpretation of area under force-distance curve.', obj: ['Differentiate work, energy and power', 'Compare forms of energy', 'Apply conservation of energy', 'Solve numerical problems in work, energy and power'] },
+        { id: 'p17', title: 'Energy Sources and Society', details: 'Sources of energy; renewable and non-renewable energy; energy diversification; environmental impact (global warming, greenhouse effect, spillage); energy crises; dams; nuclear energy; solar energy.', obj: ['Distinguish renewable from non-renewable energy', 'Analyse environmental effects of energy use', 'Identify nuclear and solar energy applications'] },
+      ]},
+      { title: '7. Friction', topics: [
+        { id: 'p18', title: 'Friction, Viscosity and Terminal Velocity', details: 'Static and dynamic friction; coefficient of limiting friction; advantages and disadvantages; reduction of friction; viscosity and terminal velocity; Stoke\'s law.', obj: ['Differentiate static and dynamic friction', 'Determine coefficient of limiting friction', "Apply Stoke's law", 'Analyse factors affecting viscosity and terminal velocity'] },
+      ]},
+      { title: '8. Simple Machines', topics: [
+        { id: 'p19', title: 'Simple Machines', details: 'Definition; types of machines; mechanical advantage, velocity ratio and efficiency of machines.', obj: ['Identify different types of simple machines', 'Solve problems involving simple machines'] },
+      ]},
+      { title: '9. Elasticity', topics: [
+        { id: 'p20', title: 'Elasticity and Hooke\'s Law', details: "Elastic limit, yield point, breaking point, Hooke's law and Young's modulus; spring balance; work done per unit volume in springs and elastic strings.", obj: ['Interpret force-extension curves', "Interpret Hooke's law and Young's modulus", 'Determine work done in springs and elastic strings'] },
+      ]},
+      { title: '10–11. Pressure and Liquids at Rest', topics: [
+        { id: 'p21', title: 'Atmospheric Pressure', details: 'Definition; SI units (Pa); measurement; mercury barometer, aneroid barometer and manometer; variation of pressure with height; barometer as altimeter.', obj: ['Recognize SI units of pressure', 'Identify pressure measuring instruments', 'Relate pressure variation to height'] },
+        { id: 'p22', title: 'Pressure in Liquids and Archimedes\' Principle', details: "Relationship between pressure, depth and density (P = ρgh); Pascal's Principle; applications. Density and relative density; upthrust; Archimedes' principle; law of floatation; ships and hydrometers.", obj: ['Determine relationship between pressure, depth and density', "Apply Pascal's Principle", "Apply Archimedes' principle and law of floatation"] },
+      ]},
+      { title: '12–13. Temperature and Thermal Expansion', topics: [
+        { id: 'p23', title: 'Temperature Measurement', details: 'Concept of temperature; thermometric properties; calibration; temperature scales (Celsius and Kelvin); types of thermometers; conversion between scales.', obj: ['Identify thermometric properties', 'Calibrate thermometers', 'Convert between temperature scales'] },
+        { id: 'p24', title: 'Thermal Expansion', details: 'Linear, volume and area expansivities (solids); volume, real and apparent expansivities (liquids); anomalous expansion of water; applications.', obj: ['Determine linear and volume expansivities', 'Assess applications of thermal expansivities', 'Analyse anomalous expansion of water'] },
+      ]},
+      { title: '14–17. Gas Laws, Heat, Vapours', topics: [
+        { id: 'p25', title: 'Gas Laws', details: "Boyle's law; Charles' law; Pressure law; absolute zero; general gas equation; ideal gas equation (PV = nRT); Van der Waals gas.", obj: ['Interpret gas laws', 'Solve numerical problems using gas laws', 'Interpret Van der Waals equation'] },
+        { id: 'p26', title: 'Quantity of Heat and Change of State', details: 'Heat capacity; specific heat capacity; methods of determination. Latent heat; specific latent heats; melting, evaporation and boiling; influence of pressure and dissolved substances on boiling/melting points.', obj: ['Differentiate heat capacity from specific heat capacity', 'Differentiate latent heat types', 'Distinguish melting, evaporation and boiling', 'Solve numerical problems on heat'] },
+        { id: 'p27', title: 'Vapours and Humidity', details: 'Saturated and unsaturated vapours; relationship between SVP and boiling; determination of SVP; dew point; humidity and relative humidity; hygrometry (wet and dry bulb hygrometer).', obj: ['Distinguish saturated from unsaturated vapours', 'Relate SVP to boiling point', 'Estimate humidity using wet and dry bulb hygrometer'] },
+      ]},
+      { title: '18–19. Structure of Matter and Heat Transfer', topics: [
+        { id: 'p28', title: 'Structure of Matter and Kinetic Theory', details: 'Atoms and molecules; molecular theory (Brownian motion, diffusion, surface tension, capillarity, adhesion, cohesion, angles of contact); assumptions of kinetic theory; applications.', obj: ['Differentiate atoms and molecules', 'Use molecular theory to explain phenomena', 'Examine assumptions of kinetic theory'] },
+        { id: 'p29', title: 'Heat Transfer', details: 'Conduction, convection and radiation; temperature gradient, thermal conductivity and heat flux; conductivities of common materials; thermos flask; land and sea breeze; internal combustion and jet engines.', obj: ['Differentiate conduction, convection and radiation', 'Solve problems on thermal conductivity and heat flux', 'Explain working of thermos flask', 'Analyse operating principles of engines'] },
+      ]},
+      { title: '20–22. Waves and Sound', topics: [
+        { id: 'p30', title: 'Wave Motion — Production and Properties', details: 'Wave motion; vibrating systems; waves as energy transfer; V = fλ; phase difference; wave number; progressive wave equation; types of waves; reflection, refraction, diffraction, polarization; superposition; beats; Doppler effect (qualitative).', obj: ['Interpret wave motion', 'Relate frequency and wavelength to wave velocity', 'Differentiate wave types', 'Explain beats, beat frequency and Doppler effect'] },
+        { id: 'p31', title: 'Propagation and Characteristics of Sound', details: 'Need for material medium; speed of sound in solids, liquids and air; echoes and reverberation. Noise vs musical notes; quality, pitch, intensity and loudness; overtones; resonance; frequencies in open and closed pipes.', obj: ['Compare speed of sound in different media', 'Solve echo and reverberation problems', 'Analyse quality, pitch, intensity and loudness', 'Determine frequencies in open and closed pipes'] },
+      ]},
+      { title: '23–27. Light and Optics', topics: [
+        { id: 'p32', title: 'Light Energy and Propagation', details: 'Natural and artificial sources; luminous vs non-luminous objects; speed, frequency and wavelength of light; shadows and eclipses; pin-hole camera.', obj: ['Compare sources of light', 'Relate speed, frequency and wavelength of light', 'Interpret formation of shadows and eclipses', 'Apply pin-hole camera principles'] },
+        { id: 'p33', title: 'Reflection of Light', details: 'Laws of reflection; formation of images by plane, concave and convex mirrors; mirror formula (1/f = 1/u + 1/v); linear magnification. Applications: periscope, kaleidoscope, sextant.', obj: ['Interpret laws of reflection', 'Apply mirror formula to solve problems', 'Determine linear magnification'] },
+        { id: 'p34', title: 'Refraction of Light', details: 'Laws of refraction; refractive index; Snell\'s law; real and apparent depth; critical angle and total internal reflection; glass prism; lens formula (1/f = 1/u + 1/v); magnification.', obj: ["Apply Snell's law", 'Determine refractive index', 'Understand total internal reflection', 'Apply lens formula', 'Calculate magnification'] },
+        { id: 'p35', title: 'Optical Instruments', details: 'Microscopes, telescopes, projectors, cameras and human eye; power of a lens; angular magnification; near and far points; sight defects and corrections.', obj: ['Apply principles of optical instruments', 'Calculate power of a lens', 'Evaluate angular magnification', 'Detect sight defects and their corrections'] },
+        { id: 'p36', title: 'Dispersion and Electromagnetic Spectrum', details: 'Dispersion of white light; pure spectrum; colour mixing (addition and subtraction); colour filters; rainbow. Electromagnetic spectrum — sources, detection and uses of various radiations.', obj: ['Identify primary colours and obtain secondary colours', 'Understand rainbow formation', 'Analyse electromagnetic spectrum by wavelength, sources, detection and uses'] },
+      ]},
+      { title: '28–32. Electricity', topics: [
+        { id: 'p37', title: 'Electrostatics', details: 'Positive and negative charges; charging by friction, contact and induction; electroscope; Coulomb\'s inverse square law; electric field and potential; electric discharge and lightning.', obj: ['Identify charges', "Apply Coulomb's square law", 'Deduce expressions for electric field intensity and potential difference', 'Analyse charge distribution on conductors'] },
+        { id: 'p38', title: 'Capacitors', details: 'Types and functions; parallel plate capacitors; capacitance; factors affecting capacitance (C = EA/d); series and parallel arrangements; energy stored.', obj: ['Determine uses of capacitors', 'Determine capacitance and factors affecting it', 'Solve capacitor arrangement problems', 'Determine energy stored'] },
+        { id: 'p39', title: 'Electric Cells', details: 'Simple voltaic cell and its defects; Daniel cell; Leclanche cell (wet and dry); lead-acid accumulator; Nickel-Iron (Nife); Lithium Iron; arrangement of cells; efficiency.', obj: ['Identify defects of voltaic cell', 'Compare different types of cells', 'Solve series and parallel cell combination problems'] },
+        { id: 'p40', title: 'Current Electricity', details: 'EMF, PD, current, internal resistance; Ohm\'s law; measurement of resistance; metre bridge; resistance in series and parallel; potentiometer; Kirchhoff\'s law; electrical networks.', obj: ["Apply Ohm's law", 'Use metre bridge to calculate resistance', "Apply Kirchhoff's law in electrical networks", 'Determine resistivity and conductivity'] },
+        { id: 'p41', title: 'Electrical Energy and Power', details: 'Electrical energy and power; commercial units; electric power transmission; heating effects of electric current; electrical wiring of houses; use of fuses.', obj: ['Apply expressions for electrical energy and power', 'Analyse power transmission', 'Identify heating effects of current', 'Determine fuse rating'] },
+      ]},
+      { title: '33–36. Magnetism and Electromagnetism', topics: [
+        { id: 'p42', title: 'Magnets and Magnetic Fields', details: "Natural and artificial magnets; magnetic properties of soft iron and steel; making and demagnetizing magnets; magnetic field patterns; earth's magnetic field (poles, meridian, dip, declination); flux and flux density; applications in navigation and mineral exploration.", obj: ['Differentiate properties of soft iron and steel', 'Describe magnetic fields of current-carrying conductors', "Identify magnetic elements of earth's field", 'Determine applications of earth\'s magnetic field'] },
+        { id: 'p43', title: 'Force on Current-Carrying Conductors', details: 'Force between parallel current-carrying conductors; force on a moving charge in magnetic field; DC motor; electromagnets; carbon microphone; galvanometer; conversion to ammeter/voltmeter; sensitivity.', obj: ["Apply Fleming's left-hand rule", 'Interpret working of DC motor', 'Apply electromagnet principles', 'Convert galvanometer to ammeter or voltmeter'] },
+        { id: 'p44', title: 'Electromagnetic Induction and Inductance', details: "Faraday's laws; factors affecting induced EMF; Lenz's law; AC and DC generators; transformers; induction coil; inductance (unit, energy stored); eddy currents (reduction and applications).", obj: ["Interpret Faraday's laws and Lenz's law", 'Interpret AC/DC generators', 'Apply transformer principles', 'Calculate effective inductance in series and parallel', 'Deduce energy stored in an inductor'] },
+        { id: 'p45', title: 'Simple AC Circuits', details: 'AC current and voltage; peak and RMS values; resistor, capacitor and inductor in AC; series RLC circuits; vector diagrams; phase angle; power factor; impedance; resonance and resonant frequency.', obj: ['Differentiate peak and RMS values', 'Determine phase difference between current and voltage', 'Calculate effective voltage, reactance and impedance', 'Determine resonant frequency of RLC arrangement'] },
+      ]},
+      { title: '37–39. Conduction, Modern Physics and Electronics', topics: [
+        { id: 'p46', title: 'Conduction Through Liquids and Gases', details: "Electrolytes and non-electrolytes; concept of electrolysis; Faraday's laws of electrolysis; applications (electroplating, calibration of ammeter). Discharge through gases (qualitative); applications.", obj: ['Distinguish electrolytes from non-electrolytes', "Apply Faraday's laws of electrolysis", 'Determine applications of conduction through gases'] },
+        { id: 'p47', title: 'Elementary Modern Physics', details: "Models of the atom (and limitations); atomic structure; energy levels and spectra; thermionic and photoelectric emission; Einstein's equation; stopping potential; X-rays; alpha, beta, gamma rays; half-life and decay constant; fission and fusion; binding energy and mass defect (ΔE = ΔMC²); wave-particle duality; electron diffraction; uncertainty principle.", obj: ['Identify atomic models and their limitations', 'Apply Einstein\'s equation for photoelectric effect', 'Compare properties of alpha, beta and gamma rays', 'Determine binding energy and mass defect', 'Apply uncertainty principle'] },
+        { id: 'p48', title: 'Introductory Electronics', details: 'Metals, semiconductors and insulators (elementary band gap knowledge); intrinsic and extrinsic semiconductors; n-type and p-type semiconductors; diodes (rectification); transistors (amplification).', obj: ['Differentiate conductors, semiconductors and insulators', 'Distinguish intrinsic from extrinsic semiconductors', 'Distinguish n-type from p-type', 'Relate diodes to rectification and transistors to amplification'] },
+      ]},
+    ]
+  },
+  chemistry: {
+    label: 'Chemistry', color: 'chemistry', icon: '⚗',
+    sections: [
+      { title: '1. Separation of Mixtures and Purification', topics: [
+        { id: 'c1', title: 'Pure Substances and Separation Processes', details: 'Pure and impure substances; boiling and melting points as criteria for purity; elements, compounds and mixtures; chemical and physical changes. Separation: evaporation, distillation (simple and fractional), sublimation, filtration, crystallization, chromatography (paper and column), magnetization, decantation.', obj: ['Distinguish pure from impure substances', 'Use boiling/melting points as criteria for purity', 'Distinguish chemical from physical changes', 'Specify the principle involved in each separation method'] },
+      ]},
+      { title: '2. Chemical Combination', topics: [
+        { id: 'c2', title: 'Chemical Combination and the Mole Concept', details: 'Stoichiometry; laws of definite and multiple proportions; law of conservation of matter; Gay-Lussac\'s law; Avogadro\'s law; chemical symbols, formulae, equations; relative atomic mass (¹²C = 12); mole concept; Avogadro\'s number.', obj: ['Perform calculations involving formulae, equations and mole concept', 'Deduce chemical laws from given data', 'Interpret graphical representations of these laws', 'Deduce stoichiometry of chemical reactions'] },
+      ]},
+      { title: '3. Kinetic Theory and Gas Laws', topics: [
+        { id: 'c3', title: 'Kinetic Theory of Matter', details: 'Outline of kinetic theory; melting, vaporization, boiling, freezing, condensation in terms of molecular motion and Brownian movement.', obj: ['Apply kinetic theory to distinguish solids, liquids and gases', 'Deduce reasons for change of state', 'Draw inferences based on molecular motion'] },
+        { id: 'c4', title: 'Gas Laws', details: "Boyle's, Charles', Graham's and Dalton's (partial pressure) laws; combined gas law; molar volume; atomicity of gases; ideal gas equation (PV = nRT); relationship between vapour density and relative molecular mass.", obj: ['Deduce gas laws from given expressions', 'Interpret graphical representations of gas laws', 'Perform simple calculations based on gas laws'] },
+      ]},
+      { title: '4. Atomic Structure and Bonding', topics: [
+        { id: 'c5', title: 'Atomic Structure and the Periodic Table', details: 'Atoms, molecules and ions; works of Dalton, Millikan, Rutherford, Moseley, Thomson and Bohr; atomic structure; electron configuration; atomic number; mass number; isotopes (elements 1–20); shapes of s and p orbitals. Periodic table: alkali metals, halogens, noble gases, transition metals; variation of ionization energy, ionic radii, electron affinity and electronegativity.', obj: ['Identify scientists\' contributions to atomic structure', 'Deduce proton, neutron and electron numbers', 'Apply electron arrangement rules', 'Identify common isotopes', 'Relate atomic number to periodic table position', 'Identify reasons for variation across periods and down groups'] },
+        { id: 'c6', title: 'Chemical Bonding', details: 'Electrovalency and covalency; hydrogen bonding; metallic bonding; coordinate bond; complex ions ([Fe(CN)₆]³⁻, [Cu(NH₃)₄]²⁺, etc.); Van der Waals forces. Shapes of molecules: linear (H₂, O₂, Cl₂, HCl, CO₂), non-linear (H₂O), tetrahedral (CH₄), pyramidal (NH₃).', obj: ['Differentiate types of bonding', 'Deduce bond types from electron configurations', 'Relate bonding to properties of compounds', 'Differentiate shapes of molecules'] },
+        { id: 'c7', title: 'Nuclear Chemistry', details: 'Radioactivity — types and properties of radiations; nuclear reactions; simple equations; uses and applications of natural and artificial radioactivity.', obj: ['Distinguish ordinary chemical from nuclear reactions', 'Differentiate natural from artificial radioactivity', 'Compare properties of nuclear radiations', 'Compute half-life calculations', 'Balance simple nuclear equations', 'Identify applications of radioactivity'] },
+      ]},
+      { title: '5–8. Air, Water, Solubility and Pollution', topics: [
+        { id: 'c8', title: 'Air', details: 'Natural gaseous constituents (N₂, O₂, H₂O vapour, CO₂, noble gases Ar and Ne) and their proportions; air as a mixture; uses of noble gases.', obj: ['Deduce reasons for air existing as a mixture', 'Identify principle of separation of air components', 'Specify uses of air constituents'] },
+        { id: 'c9', title: 'Water', details: 'Water from combustion of hydrogen; water as a solvent; atmospheric gases dissolved in water and their biological significance; hard and soft water; temporary and permanent hardness; methods of softening; treatment of water for town supply; water of crystallization; efflorescence; deliquescence; hygroscopy.', obj: ['Identify uses of water', 'Distinguish hard from soft water', 'Identify methods of removal of hardness', 'Describe water treatment processes', 'Distinguish efflorescence, deliquescence and hygroscopy'] },
+        { id: 'c10', title: 'Solubility', details: 'Unsaturated, saturated and supersaturated solutions; solubility curves (mole per dm³); solvents for fats, oils and paints; suspensions and colloids (properties and examples including Harmattan haze, milk, aerosol spray, emulsion paints).', obj: ['Distinguish types of solutions', 'Interpret solubility curves', 'Calculate amount of solute at given temperature', 'Differentiate true solution, suspension and colloid'] },
+        { id: 'c11', title: 'Environmental Pollution', details: 'Sources and effects of pollutants; air pollution (H₂S, CO, SO₂, oxides of nitrogen, CFCs, dust); water pollution (sewage and oil); soil pollution (oil spillage, biodegradable and non-biodegradable pollutants).', obj: ['Identify types of pollution and pollutants', 'Classify pollutants as biodegradable and non-biodegradable', 'Specify effects of pollution on the environment', 'Identify measures for control of environmental pollution'] },
+      ]},
+      { title: '9–10. Acids, Bases, Salts and Redox', topics: [
+        { id: 'c12', title: 'Acids, Bases and Salts', details: 'Properties of acids, bases and salts; indicators; basicity; types of salts (normal, acidic, basic, double); Brønsted-Lowry definition (H₃O⁺ donor); naturally occurring organic acids; alums; preparation of salts; qualitative comparison of conductances; pH and pOH; acid/base titrations; hydrolysis of salts (NH₄Cl, AlCl₃, Na₂CO₃, CH₃COONa).', obj: ['Distinguish properties of acids and bases', 'Determine basicity of acids', 'Perform pH and pOH calculations', 'Identify appropriate acid-base indicators', 'Interpret titration curves', 'Balance hydrolysis equations'] },
+        { id: 'c13', title: 'Oxidation and Reduction', details: 'Oxidation (addition of O / removal of H); reduction (removal of O / addition of H); electron transfer; oxidation numbers; balancing redox equations using oxidation numbers; IUPAC nomenclature using oxidation number; tests for oxidizing and reducing agents.', obj: ['Classify reactions as oxidation or reduction', 'Balance redox equations', 'Deduce oxidation numbers', 'Compute number of electron transfers in redox reactions', 'Apply oxidation number in naming inorganic compounds'] },
+      ]},
+      { title: '11–12. Electrolysis and Energy Changes', topics: [
+        { id: 'c14', title: 'Electrolysis', details: 'Electrolytes and non-electrolytes; Faraday\'s laws of electrolysis; electrolysis of dilute H₂SO₄, aqueous CuSO₄, CuCl₂, dilute and concentrated NaCl solutions, fused NaCl; factors affecting discharge of ions; uses (purification of Cu, production of Al, Na, O₂, Cl₂, NaOH); electrochemical cells; redox series; half-cell reactions and electrode potentials; corrosion; cathodic protection; electroplating.', obj: ['Perform Faraday calculations', 'Specify electrode reactions', 'Calculate electrode potentials using half-cell reactions', 'Identify methods of protecting metals from corrosion'] },
+        { id: 'c15', title: 'Energy Changes and Entropy', details: 'Energy changes (ΔH) in physical and chemical processes; dissolution of substances in/with water (Na, NaOH, K, NH₄Cl); endothermic (+ΔH) and exothermic (−ΔH) reactions; entropy as order-disorder phenomenon; spontaneity (ΔG = ΔH − TΔS).', obj: ['Determine types of heat changes in processes', 'Interpret graphical representations of heat changes', 'Relate degree of orderliness to physical state', 'Determine conditions for spontaneity', 'Solve problems using ΔG = ΔH − TΔS'] },
+      ]},
+      { title: '13–14. Reaction Rates and Equilibrium', topics: [
+        { id: 'c16', title: 'Rates of Chemical Reaction', details: 'Factors affecting rate (temperature, concentration, surface area, catalyst); reaction rate curves; activation energy; Arrhenius\' law (qualitative); collision theory; effect of light on reactions (e.g., halogenation of alkanes).', obj: ['Identify factors affecting reaction rate', 'Interpret reaction rate curves', 'Deduce activation energy from rate curves', 'Relate rate of reaction to kinetic theory'] },
+        { id: 'c17', title: 'Chemical Equilibrium', details: "Reversible reactions; dynamic equilibrium; Le Chatelier's principle; equilibrium constant. Examples: action of steam on iron; N₂O₄ ⇌ 2NO₂. (No calculations required)", obj: ['Identify factors affecting position of equilibrium', 'Predict effects of each factor on equilibrium', 'Determine effects on equilibrium constant'] },
+      ]},
+      { title: '15. Non-metals and Their Compounds', topics: [
+        { id: 'c18', title: 'Hydrogen', details: 'Commercial production from water gas and cracking of petroleum fractions; laboratory preparation; properties; uses; test for hydrogen.', obj: ['Predict reagents for lab and industrial preparation', 'Specify uses and test for hydrogen'] },
+        { id: 'c19', title: 'Halogens — Chlorine, HCl and Hydrochloric Acid', details: 'Chlorine — laboratory and industrial preparation (electrolysis); properties; uses (water sterilization, bleaching, HCl manufacture, plastics, insecticides). HCl and hydrochloric acid — preparation and properties. Test for Cl⁻.', obj: ['Identify properties and uses of chlorine', 'Predict reagents for HCl preparation', 'Determine specific test for Cl⁻'] },
+        { id: 'c20', title: 'Oxygen, Ozone and Sulphur Compounds', details: 'Oxygen — lab preparation; oxides (acidic, basic, amphoteric, neutral); ozone as allotrope and its importance. Sulphur — allotropes; SO₂ and its reactions with alkalis; H₂SO₃; H₂SO₄ (contact process), properties (dilute acid, oxidizing and dehydrating agent); H₂S preparation, properties and tests. Tests for SO₄²⁻, SO₃²⁻, S²⁻.', obj: ['Classify oxides', 'Determine significance of ozone', 'Specify preparations and uses of H₂SO₄', 'Determine tests for sulphur compounds'] },
+        { id: 'c21', title: 'Nitrogen and Its Compounds', details: 'Nitrogen — lab preparation and production from liquid air. NH₃ — lab and Haber process; properties; uses; ammonium salts; oxidation to NO and HNO₃. HNO₃ — lab preparation; properties and uses. Trioxonitrate(V) salts — action of heat. Oxides of nitrogen — properties. Nitrogen cycle. Tests for NH₄⁺ and NO₃⁻.', obj: ['Specify lab and industrial preparation of nitrogen compounds', 'Determine tests for NH₄⁺ and NO₃⁻', 'Examine relevance of nitrogen cycle'] },
+        { id: 'c22', title: 'Carbon and Its Compounds', details: 'Allotropes — uses and properties. CO₂ — lab preparation, properties and uses; action of heat on CO₃²⁻ salts; test for CO₃²⁻. CO — lab preparation, properties and effect on blood; sources. Coal — types, products of destructive distillation of wood and coal. Coke — classification, uses, synthetic gas.', obj: ['Predict reagents for CO₂ and CO preparation', 'Predict effects of CO on humans', 'Identify products of destructive distillation of coal', 'Specify uses of coke and synthetic gas'] },
+      ]},
+      { title: '16. Metals and Their Compounds', topics: [
+        { id: 'c23', title: 'Alkali Metals — Sodium', details: 'General properties of metals. NaOH — production by electrolysis of brine; action on Al, Zn and Pb ions; uses (precipitating metallic hydroxides). Na₂CO₃ and NaHCO₃ — Solvay process; properties and uses (e.g., Na₂CO₃ in glass manufacture). NaCl — occurrence in sea water; uses; economic importance of sea water; recovery of NaCl.', obj: ['Specify general properties of metals', 'Determine methods of extraction and production of sodium compounds', 'Specify uses of sodium compounds'] },
+        { id: 'c24', title: 'Alkaline-earth Metals — Calcium', details: 'CaO, Ca(OH)₂ and CaCO₃ — properties and uses. Preparation of CaO from sea shells. Chemical composition of cement and the setting of mortar. Test for Ca²⁺.', obj: ['Specify properties and uses of calcium compounds', 'Determine test for Ca²⁺', 'Specify chemical composition of cement'] },
+        { id: 'c25', title: 'Aluminium and Tin', details: 'Aluminium — purification of bauxite; electrolytic extraction; properties and uses; compounds. Test for Al³⁺. Tin — extraction from ores; properties and uses.', obj: ['Describe purification of bauxite', 'Specify method of electrolytic extraction of aluminium', 'Determine test for Al³⁺', 'Specify ores and uses of tin'] },
+        { id: 'c26', title: 'Transition Metals — Iron, Copper and Their Compounds', details: 'First transition series: electron configuration, oxidation states, complex ion formation, coloured ions, catalysis. Iron — extraction from sulphide and oxide ores; properties and uses; different forms of iron; advantages of steel over iron. Tests for Fe²⁺ and Fe³⁺. Copper — extraction from sulphide and oxide ores; properties and uses; preparation and uses of CuSO₄·5H₂O. Test for Cu²⁺.', obj: ['Identify general properties of transition metals', 'Determine IUPAC names of transition metal complexes', 'Specify properties and uses of iron and copper', 'Determine tests for Fe²⁺, Fe³⁺ and Cu²⁺'] },
+        { id: 'c27', title: 'Alloys', details: 'Steel, stainless steel, brass, bronze, type-metal, duralumin, soft solder, permalloy and alnico — constituents and uses only.', obj: ['Specify constituents and uses of various alloys', 'Compare properties and uses of alloys to pure metals'] },
+      ]},
+      { title: '17. Organic Chemistry', topics: [
+        { id: 'c28', title: 'Aliphatic Hydrocarbons', details: 'Tetravalency of carbon; general formulae; IUPAC nomenclature; empirical formula. Alkanes — homologous series; substitution reactions; structural isomerism (up to 6 carbons); petroleum (composition, fractional distillation, cracking, reforming; octane number). Alkenes — structural and geometric isomerism; addition and polymerization (polythene, synthetic rubber, vulcanization). Alkynes — ethyne production from carbides; simple reactions.', obj: ['Derive names from general formulae', 'Relate structure to properties', 'Distinguish isomers', 'Relate petroleum fractions to properties and uses', 'Distinguish polymerization types', 'Specify the process of vulcanization'] },
+        { id: 'c29', title: 'Aromatic Hydrocarbons and Alkanols', details: 'Benzene — structure, properties and uses. Alkanols (primary, secondary, tertiary) — production of ethanol by fermentation and from petroleum by-products; glycerol; reactions of OH group; oxidation as distinguishing test; Lucas test.', obj: ['Distinguish aliphatic from aromatic hydrocarbons', 'Relate benzene properties to its structure', 'Compare classes of alkanols', 'Determine processes involved in ethanol production'] },
+        { id: 'c30', title: 'Alkanals, Alkanones and Alkanoic Acids', details: 'Alkanals and alkanones — chemical tests to distinguish them. Alkanoic acids — neutralization and esterification; ethanedioic (oxalic) acid as dicarboxylic acid; benzene carboxylic acid as aromatic acid.', obj: ['Differentiate alkanals from alkanones', 'Compare types of alkanoic acids', 'Identify neutralization and esterification reactions'] },
+        { id: 'c31', title: 'Alkanoates, Amines, Carbohydrates and Proteins', details: 'Alkanoates — fats and oils; saponification; production of soap and margarine; detergents vs soaps. Alkanamines (primary, secondary, tertiary). Carbohydrates — mono-, di- and polysaccharides; composition; chemical tests for simple sugars; hydrolysis; uses in beverages, pharmaceuticals and textiles. Proteins — primary structures; hydrolysis; tests (Ninhydrin, Biuret, Millon\'s, xanthoproteic); enzymes.', obj: ['Specify soap and detergent production methods', 'Distinguish detergent from soap', 'Compare classes of carbohydrates', 'Specify tests for simple sugars and proteins', 'Identify enzyme functions'] },
+        { id: 'c32', title: 'Polymers', details: 'Natural and synthetic rubber; addition and condensation polymerization — methods, examples and uses. Thermoplastic and thermosetting plastics.', obj: ['Distinguish natural from synthetic polymers', 'Differentiate addition from condensation polymerization', 'Distinguish thermoplastics from thermosetting plastics', 'Classify natural and commercial polymers and their uses'] },
+      ]},
+      { title: '18. Chemistry and Industry', topics: [
+        { id: 'c33', title: 'Chemical Industries and Biotechnology', details: 'Types of chemical industries; raw materials and relevancies; biotechnology. Fine vs heavy chemicals.', obj: ['Classify chemical industries in terms of products', 'Identify raw materials for each industry', 'Distinguish fine from heavy chemicals', 'Relate industrial processes to biotechnology'] },
+      ]},
+    ]
+  }
+};
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let state = {};
+let todayCount = 0;
+let filters = { math:'all', english:'all', physics:'all', chemistry:'all' };
+
+function loadState() {
+  try { const s = localStorage.getItem('st_web_v1'); if(s) state = JSON.parse(s); } catch(e){}
+  try {
+    const d = localStorage.getItem('st_streak');
+    if(d){ const p = JSON.parse(d); if(p.date === new Date().toDateString()) todayCount = p.count||0; }
+  } catch(e){}
+}
+
+function saveState() { localStorage.setItem('st_web_v1', JSON.stringify(state)); }
+function saveStreak() {
+  localStorage.setItem('st_streak', JSON.stringify({date: new Date().toDateString(), count: todayCount}));
+}
+
+// ═══════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════
+function renderAll() {
+  Object.keys(SYLLABUS).forEach(s => buildPanel(s));
+  updateStats();
+}
+
+function buildPanel(subj) {
+  const data = SYLLABUS[subj];
+  const panel = document.getElementById('panel-' + subj);
+  const accentClass = subj === 'english' ? 'eng' : subj === 'physics' ? 'phy' : subj === 'chemistry' ? 'chem' : 'math';
+
+  let html = `
+    <div class="controls-bar">
+      <div class="ctrl-left">
+        <div class="subj-heading ${accentClass}-color">${data.label}</div>
+      </div>
+      <div class="ctrl-right">
+        <div class="search-box">
+          <span class="search-ico">🔍</span>
+          <input type="text" placeholder="Search topics…" oninput="doSearch('${subj}', this.value)">
+        </div>
+        <button class="btn" onclick="expandAll('${subj}')">Expand All</button>
+        <button class="btn" onclick="collapseAll('${subj}')">Collapse All</button>
+        <button class="btn btn-blue" onclick="markAll('${subj}')">Mark All Done</button>
+      </div>
+    </div>
+    <div class="stats-row" id="sr-${subj}"></div>
+    <div class="filter-row">
+      <button class="fpill active" onclick="setF('${subj}','all',this)">All</button>
+      <button class="fpill" onclick="setF('${subj}','pending',this)">Pending</button>
+      <button class="fpill" onclick="setF('${subj}','done',this)">Completed</button>
+    </div>
+    <div id="secs-${subj}">
+  `;
+
+  data.sections.forEach((sec, si) => {
+    const total = sec.topics.length;
+    const done = sec.topics.filter(t => state[t.id]).length;
+    const pct = total ? Math.round(done/total*100) : 0;
+    html += `
+      <div class="section-block expanded" id="${subj}-sec-${si}">
+        <div class="sec-header" onclick="toggleSec(this.parentElement)">
+          <div class="sec-header-left">
+            <div class="sec-icon ${accentClass}-bg ${accentClass}-color">${data.icon}</div>
+            <div class="sec-title">${sec.title}</div>
+          </div>
+          <div class="sec-header-right">
+            <div class="sec-prog">
+              <div class="sec-mini-bar"><div class="sec-mini-fill ${accentClass}-bar" id="sfill-${subj}-${si}" style="width:${pct}%"></div></div>
+              <div class="sec-pct" id="spct-${subj}-${si}">${done}/${total}</div>
+            </div>
+            <div class="chev">▼</div>
+          </div>
+        </div>
+        <div class="sec-body">
+          ${sec.topics.map(t => buildTopic(t, accentClass)).join('')}
+        </div>
+      </div>
+    `;
+  });
+
+  html += '</div>';
+  panel.innerHTML = html;
+  updateStatRow(subj);
+}
+
+function buildTopic(t, ac) {
+  const done = !!state[t.id];
+  const objTags = (t.obj||[]).map(o => `<span class="t-obj-tag">${o}</span>`).join('');
+  return `
+    <div class="topic-item ${done?'completed':''}" id="ti-${t.id}" onclick="clickTopic(event,'${t.id}')">
+      <div class="t-check" id="chk-${t.id}"></div>
+      <div class="t-body">
+        <div class="t-title">${t.title}</div>
+        <div class="t-details">
+          <p>${t.details||''}</p>
+          <div class="t-obj-title">Learning Objectives</div>
+          <div class="t-obj-list">${objTags}</div>
+        </div>
+      </div>
+      <div class="t-expand" onclick="event.stopPropagation();toggleDet('ti-${t.id}')">▼</div>
+    </div>
+  `;
+}
+
+function clickTopic(e, id) {
+  if(e.target.classList.contains('t-expand')) return;
+  const subj = id.split('-')[0] === 'm' ? 'math' : id.startsWith('e') ? 'english' : id.startsWith('p') ? 'physics' : 'chemistry';
+  // find section index
+  let si = -1;
+  SYLLABUS[subj].sections.forEach((sec, i) => { if(sec.topics.find(t => t.id === id)) si = i; });
+  toggleTopic(id, subj, si);
+}
+
+function toggleTopic(id, subj, si) {
+  state[id] = !state[id];
+  saveState();
+  const el = document.getElementById('ti-' + id);
+  if(state[id]) {
+    el.classList.add('completed');
+    todayCount++;
+    showToast('✓', 'Topic marked complete!', '#22c55e');
+  } else {
+    el.classList.remove('completed');
+    if(todayCount > 0) todayCount--;
+    showToast('○', 'Topic unmarked.', '#f59e0b');
+  }
+  saveStreak();
+  applyF(subj);
+  updateSecBar(subj, si);
+  updateStats();
+
+  const sec = SYLLABUS[subj].sections[si];
+  const done = sec.topics.filter(t => state[t.id]).length;
+  if(done === sec.topics.length && state[id]) setTimeout(() => celebrate(sec.title), 600);
+}
+
+function toggleDet(id) {
+  const el = document.getElementById(id);
+  el.classList.toggle('t-open');
+}
+
+function updateSecBar(subj, si) {
+  const sec = SYLLABUS[subj].sections[si];
+  const total = sec.topics.length;
+  const done = sec.topics.filter(t => state[t.id]).length;
+  const pct = total ? Math.round(done/total*100) : 0;
+  const f = document.getElementById(`sfill-${subj}-${si}`);
+  const p = document.getElementById(`spct-${subj}-${si}`);
+  if(f) f.style.width = pct + '%';
+  if(p) p.textContent = done + '/' + total;
+}
+
+function updateStatRow(subj) {
+  const accentClass = subj === 'english' ? 'eng' : subj === 'physics' ? 'phy' : subj === 'chemistry' ? 'chem' : 'math';
+  let total = 0, done = 0;
+  SYLLABUS[subj].sections.forEach(s => { total += s.topics.length; done += s.topics.filter(t => state[t.id]).length; });
+  const pct = total ? Math.round(done/total*100) : 0;
+  const el = document.getElementById('sr-' + subj);
+  if(!el) return;
+  el.innerHTML = `
+    <div class="stat-card"><div class="sc-num ${accentClass}-color">${total}</div><div class="sc-label">Total Topics</div></div>
+    <div class="stat-card"><div class="sc-num" style="color:var(--success)">${done}</div><div class="sc-label">Completed</div></div>
+    <div class="stat-card"><div class="sc-num" style="color:#f87171">${total-done}</div><div class="sc-label">Remaining</div></div>
+    <div class="stat-card"><div class="sc-num ${accentClass}-color">${pct}%</div><div class="sc-label">Progress</div></div>
+  `;
+}
+
+function updateStats() {
+  let tAll = 0, tDone = 0;
+  Object.keys(SYLLABUS).forEach(subj => {
+    let sAll = 0, sDone = 0;
+    SYLLABUS[subj].sections.forEach(s => {
+      sAll += s.topics.length;
+      sDone += s.topics.filter(t => state[t.id]).length;
+    });
+    tAll += sAll; tDone += sDone;
+    const pct = sAll ? Math.round(sDone/sAll*100) : 0;
+    const cnt = document.getElementById('ntc-' + subj);
+    const sbc = document.getElementById('sbc-' + subj);
+    const sbb = document.getElementById('sbc-bar-' + subj);
+    if(cnt) cnt.textContent = sDone + '/' + sAll;
+    if(sbc) sbc.textContent = sDone + '/' + sAll;
+    if(sbb) sbb.style.width = pct + '%';
+    updateStatRow(subj);
+  });
+  const pct = tAll ? Math.round(tDone/tAll*100) : 0;
+  document.getElementById('hdr-done').textContent = tDone;
+  document.getElementById('hdr-all').textContent = tAll;
+  document.getElementById('hdr-streak').textContent = todayCount;
+  document.getElementById('oc-done').textContent = tDone;
+  document.getElementById('oc-left').textContent = tAll - tDone;
+  document.getElementById('oc-pct').textContent = pct + '%';
+  document.getElementById('big-bar').style.width = pct + '%';
+}
+
+// ═══════════════════════════════════════════
+// UI
+// ═══════════════════════════════════════════
+function switchTab(subj) {
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.subject-panel').forEach(p => p.classList.remove('active'));
+  document.querySelector(`.nav-tab[data-s="${subj}"]`).classList.add('active');
+  document.getElementById('panel-' + subj).classList.add('active');
+}
+
+function toggleSec(block) { block.classList.toggle('expanded'); }
+function expandAll(s) { document.querySelectorAll(`#panel-${s} .section-block`).forEach(b => b.classList.add('expanded')); }
+function collapseAll(s) { document.querySelectorAll(`#panel-${s} .section-block`).forEach(b => b.classList.remove('expanded')); }
+
+function markAll(subj) {
+  const all = SYLLABUS[subj].sections.flatMap(s => s.topics);
+  const allDone = all.every(t => state[t.id]);
+  all.forEach(t => state[t.id] = !allDone);
+  saveState();
+  buildPanel(subj);
+  applyF(subj);
+  updateStats();
+  showToast(allDone ? '○' : '✓', allDone ? 'All topics unmarked.' : 'All topics marked complete!', allDone ? '#f87171' : '#22c55e');
+}
+
+function doSearch(subj, q) {
+  q = q.toLowerCase();
+  document.querySelectorAll(`#panel-${subj} .topic-item`).forEach(el => {
+    el.style.display = (q && !el.querySelector('.t-title').textContent.toLowerCase().includes(q)) ? 'none' : '';
+  });
+}
+
+function setF(subj, type, btn) {
+  filters[subj] = type;
+  btn.closest('.filter-row').querySelectorAll('.fpill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  applyF(subj);
+}
+
+function applyF(subj) {
+  const type = filters[subj];
+  document.querySelectorAll(`#panel-${subj} .topic-item`).forEach(el => {
+    if(type === 'all') { el.style.display = ''; return; }
+    const done = el.classList.contains('completed');
+    el.style.display = (type === 'done' ? done : !done) ? '' : 'none';
+  });
+}
+
+// ═══════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════
+let tTimer;
+function showToast(icon, msg, color) {
+  document.getElementById('t-icon').textContent = icon;
+  document.getElementById('t-icon').style.color = color;
+  document.getElementById('t-msg').textContent = msg;
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  clearTimeout(tTimer);
+  tTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ═══════════════════════════════════════════
+// CELEBRATION
+// ═══════════════════════════════════════════
+function celebrate(title) {
+  document.getElementById('modal-title').textContent = '🏆 Section Complete!';
+  document.getElementById('modal-sub').textContent = `You finished "${title}". Outstanding work!`;
+  document.getElementById('modal').classList.add('show');
+  launchConfetti();
+}
+
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const colors = ['#1a56db','#3b82f6','#10d9a0','#f59e0b','#f472b6','#ffffff'];
+  const pieces = Array.from({length:100}, () => ({
+    x: Math.random() * canvas.width,
+    y: -20,
+    r: Math.random() * 9 + 3,
+    color: colors[Math.floor(Math.random()*colors.length)],
+    vx: (Math.random()-0.5)*5,
+    vy: Math.random()*4+2,
+    rot: Math.random()*360,
+    vrot: (Math.random()-0.5)*12
+  }));
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p => {
+      p.x+=p.vx; p.y+=p.vy; p.vy+=0.06; p.rot+=p.vrot;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.r,-p.r/2,p.r*2,p.r);
+      ctx.restore();
+    });
+    frame++;
+    if(frame<140) requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+}
+
+// ═══════════════════════════════════════════
+// EXPORT / RESET
+// ═══════════════════════════════════════════
+function exportProgress() {
+  const lines = ['JAMB SYLLABUS PROGRESS REPORT', '='.repeat(40), `Generated: ${new Date().toLocaleString()}`, ''];
+  Object.keys(SYLLABUS).forEach(subj => {
+    const data = SYLLABUS[subj];
+    let all=0,done=0;
+    data.sections.forEach(s => { all+=s.topics.length; done+=s.topics.filter(t=>state[t.id]).length; });
+    lines.push(`\n${'═'.repeat(40)}\n${data.label.toUpperCase()} — ${done}/${all} topics (${all?Math.round(done/all*100):0}%)\n${'═'.repeat(40)}`);
+    data.sections.forEach(sec => {
+      lines.push(`\n${sec.title}`);
+      sec.topics.forEach(t => lines.push(`  [${state[t.id]?'✓':' '}] ${t.title}`));
+    });
+  });
+  const blob = new Blob([lines.join('\n')],{type:'text/plain'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `JAMB_Progress_${new Date().toLocaleDateString().replace(/\//g,'-')}.txt`;
+  a.click();
+}
+
+function resetAll() {
+  if(!confirm('Reset ALL progress? This cannot be undone.')) return;
+  state = {}; todayCount = 0;
+  saveState(); saveStreak();
+  Object.keys(SYLLABUS).forEach(s => buildPanel(s));
+  updateStats();
+  showToast('↺','All progress reset.','#f87171');
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+loadState();
+renderAll();
+</script>
+</body>
+</html>
